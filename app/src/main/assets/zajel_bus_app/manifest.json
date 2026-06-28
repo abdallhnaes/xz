@@ -1,0 +1,21 @@
+{
+  "name": "زاجل",
+  "short_name": "زاجل",
+  "description": "تطبيق فواتير باص الزاجل مع حماية PIN",
+  "start_url": "index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "landscape",
+  "dir": "rtl",
+  "lang": "ar",
+  "background_color": "#f6fbf8",
+  "theme_color": "#00533d",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

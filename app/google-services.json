@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "498385028602",
+    "project_id": "zajel-889f4",
+    "storage_bucket": "zajel-889f4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:498385028602:android:5f56018ad3d8303f121043",
+        "android_client_info": {
+          "package_name": "com.abdallh.amen"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOt2-WIIkGtVi9GeQaISdLLq_RyjVfPNM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

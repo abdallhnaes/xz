@@ -1,0 +1,2001 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#00533d">
+  <title>زاجل سحابي - فواتير باص الزاجل</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg">
+  <style>
+    :root{
+      --green:#00533d;
+      --green2:#08734d;
+      --green3:#0c8a55;
+      --orange:#f28b00;
+      --purple:#593082;
+      --blue:#086a77;
+      --cream:#fff8ef;
+      --line:#e7d7bf;
+      --ink:#173126;
+      --muted:#6c7a73;
+      --danger:#be3144;
+      --shadow: 0 10px 25px rgba(0, 83, 61, .13);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Tahoma, Arial, sans-serif;
+      background:linear-gradient(180deg,#f6fbf8 0%, #eef7f2 100%);
+      color:var(--ink);
+    }
+    .app{
+      max-width:1280px;
+      margin:0 auto;
+      padding:14px;
+    }
+    .hero{
+      background:#fff;
+      border:3px solid var(--green);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .header{
+      display:grid;
+      grid-template-columns: 220px 1fr 285px;
+      gap:14px;
+      align-items:center;
+      padding:16px 18px 8px;
+    }
+    .bus-art{
+      height:105px;
+      border-radius:22px;
+      background:linear-gradient(145deg,#fff4df,#ffffff);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .bus-art svg{width:180px;height:95px}
+    h1{
+      margin:0;
+      color:var(--green);
+      font-size:42px;
+      line-height:1.15;
+      text-align:center;
+      letter-spacing:-1px;
+    }
+    .subtitle{
+      text-align:center;
+      font-size:18px;
+      font-weight:700;
+      margin-top:8px;
+    }
+    .route-box{
+      border:2px solid var(--green);
+      border-radius:14px;
+      overflow:hidden;
+      background:#fff;
+      font-weight:700;
+    }
+    .route-line{
+      background:var(--green);
+      color:#fff;
+      padding:10px 12px;
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      align-items:center;
+    }
+    .date-line{
+      padding:13px 12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:16px;
+    }
+    .toolbar{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      padding:8px 16px 14px;
+      justify-content:center;
+    }
+    button, .file-label{
+      border:none;
+      border-radius:12px;
+      background:var(--green);
+      color:#fff;
+      padding:10px 14px;
+      font-weight:700;
+      cursor:pointer;
+      transition:.15s;
+      box-shadow:0 3px 8px rgba(0,0,0,.08);
+      font-family:inherit;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-size:14px;
+    }
+    button:hover, .file-label:hover{transform:translateY(-1px); filter:brightness(1.05)}
+    button.secondary{background:#fff;color:var(--green);border:2px solid var(--green)}
+    button.orange{background:var(--orange)}
+    button.danger{background:var(--danger)}
+    button.blue{background:var(--blue)}
+    input, select{
+      width:100%;
+      border:1.5px solid #cfd9d4;
+      border-radius:12px;
+      padding:10px 11px;
+      font-family:inherit;
+      font-size:15px;
+      background:#fff;
+      color:var(--ink);
+    }
+    label{
+      font-weight:700;
+      display:block;
+      margin-bottom:6px;
+      color:#164635;
+    }
+    .panel{
+      margin:12px 16px 16px;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:12px;
+    }
+    .card{
+      background:#fff;
+      border:1px solid #dbe8e2;
+      border-radius:var(--radius);
+      padding:14px;
+      box-shadow:0 5px 15px rgba(0,0,0,.04);
+    }
+    .card h2{
+      margin:0 0 12px;
+      color:var(--green);
+      font-size:22px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
+    }
+    .settings-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:10px;
+    }
+    .span-2{grid-column:span 2}
+    .span-4{grid-column:span 4}
+    .hint{
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.65;
+      margin:8px 0 0;
+    }
+    .status{
+      min-height:22px;
+      margin-top:8px;
+      font-weight:700;
+      color:var(--green2);
+    }
+    .table-wrap{
+      margin:0 10px;
+      overflow:auto;
+      border-radius:12px;
+      border:1px solid var(--line);
+    }
+    table{
+      width:100%;
+      border-collapse:collapse;
+      min-width:1050px;
+      background:#fff;
+      font-size:14px;
+    }
+    th{
+      background:linear-gradient(180deg,#006044,#004b37);
+      color:#fff;
+      padding:10px 8px;
+      border-left:1px solid rgba(255,255,255,.35);
+      white-space:nowrap;
+      text-align:center;
+      font-size:14px;
+    }
+    td{
+      padding:7px 8px;
+      border:1px solid #f0e6d8;
+      text-align:center;
+      height:28px;
+      font-weight:700;
+    }
+    tr:nth-child(6n) td, tr.friday td{background:#fff2de}
+    td.muted{color:#91a29a}
+    td.negative{color:var(--danger)}
+    td.positive{color:#08734d}
+    .row-actions{
+      display:flex;
+      gap:6px;
+      justify-content:center;
+    }
+    .row-actions button{
+      padding:5px 8px;
+      border-radius:8px;
+      font-size:12px;
+      box-shadow:none;
+    }
+    .summary{
+      display:grid;
+      grid-template-columns:repeat(8,1fr);
+      gap:10px;
+      padding:14px 10px 10px;
+    }
+    .sum-card{
+      border-radius:13px;
+      color:#fff;
+      min-height:88px;
+      padding:10px 8px;
+      text-align:center;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      box-shadow:0 6px 14px rgba(0,0,0,.15);
+    }
+    .sum-card .t{font-size:15px;font-weight:700;margin-bottom:4px}
+    .sum-card .v{font-size:28px;font-weight:900;letter-spacing:.5px}
+    .sum-card .c{font-size:14px;font-weight:700}
+    .s-green{background:linear-gradient(145deg,#006b49,#003f32)}
+    .s-green2{background:linear-gradient(145deg,#0b8b53,#006137)}
+    .s-blue{background:linear-gradient(145deg,#0a8290,#075f68)}
+    .s-orange{background:linear-gradient(145deg,#ff9700,#e57800)}
+    .s-purple{background:linear-gradient(145deg,#6c3b96,#4b2870)}
+    .remaining{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+      padding:0 110px 12px;
+    }
+    .remain-box{
+      background:#fff;
+      border:2px solid var(--green);
+      border-radius:10px;
+      min-height:40px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:18px;
+      font-size:20px;
+      font-weight:900;
+    }
+    .footer-note{
+      background:var(--green);
+      color:#fff;
+      font-size:23px;
+      text-align:center;
+      font-weight:900;
+      padding:13px;
+      border-radius:0 0 17px 17px;
+      position:relative;
+    }
+    .corner{
+      position:absolute;
+      width:110px;height:32px;border-top:9px solid var(--orange);
+      bottom:0;
+    }
+    .corner.r{right:0;border-left:9px solid transparent;border-radius:0 35px 0 0}
+    .corner.l{left:0;border-right:9px solid transparent;border-radius:35px 0 0 0}
+    .mobile-note{
+      display:none;
+      margin:8px 16px;
+      color:#6b4b00;
+      background:#fff8df;
+      border:1px solid #f4d48f;
+      padding:10px;
+      border-radius:12px;
+      font-weight:700;
+      line-height:1.6;
+    }
+    .hidden{display:none !important}
+    @media (max-width:960px){
+      .header{grid-template-columns:1fr; text-align:center}
+      h1{font-size:30px}
+      .subtitle{font-size:15px}
+      .bus-art{height:75px}.bus-art svg{height:70px}
+      .panel{grid-template-columns:1fr;margin:10px}
+      .form-grid,.settings-grid{grid-template-columns:repeat(2,1fr)}
+      .span-4{grid-column:span 2}
+      .summary{grid-template-columns:repeat(2,1fr)}
+      .remaining{grid-template-columns:1fr;padding:0 10px 12px}
+      .footer-note{font-size:18px}
+      .mobile-note{display:block}
+    }
+    @media print{
+      body{background:#fff}
+      .toolbar,.panel,.mobile-note,.row-actions,.no-print{display:none !important}
+      .app{max-width:none;padding:0}
+      .hero{border:2px solid #0b513c;box-shadow:none}
+      .header{grid-template-columns:180px 1fr 260px}
+      h1{font-size:34px}
+      .summary{gap:6px}
+      .sum-card .v{font-size:22px}
+      table{font-size:11px;min-width:0}
+      th,td{padding:4px 3px}
+    }
+  
+    /* PIN lock */
+    body.locked{
+      overflow:hidden;
+    }
+    .pin-lock{
+      position:fixed;
+      inset:0;
+      z-index:9999;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      background:
+        radial-gradient(circle at top left, rgba(242,139,0,.20), transparent 32%),
+        radial-gradient(circle at bottom right, rgba(0,83,61,.22), transparent 36%),
+        linear-gradient(135deg, #061d25 0%, #0b3f35 55%, #05231d 100%);
+    }
+    .pin-lock.show{display:flex}
+    .pin-card{
+      width:min(410px, 100%);
+      background:rgba(255,255,255,.96);
+      border:2px solid rgba(242,139,0,.45);
+      border-radius:28px;
+      box-shadow:0 22px 55px rgba(0,0,0,.34);
+      padding:24px 18px 20px;
+      text-align:center;
+      direction:rtl;
+    }
+    .pin-logo{
+      width:82px;
+      height:82px;
+      margin:0 auto 12px;
+      border-radius:24px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:54px;
+      font-weight:900;
+      color:#fff;
+      background:linear-gradient(145deg,#00533d,#0a7a54);
+      box-shadow:0 12px 25px rgba(0,83,61,.28);
+      position:relative;
+      overflow:hidden;
+    }
+    .pin-logo::after{
+      content:"";
+      position:absolute;
+      width:150%;
+      height:36%;
+      background:rgba(255,255,255,.16);
+      transform:rotate(-20deg);
+      top:5px;
+      right:-25%;
+    }
+    .pin-title{
+      font-size:24px;
+      font-weight:900;
+      color:var(--green);
+      margin:4px 0;
+    }
+    .pin-subtitle{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.7;
+      margin-bottom:16px;
+    }
+    .pin-dots{
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      margin:14px 0 18px;
+      direction:ltr;
+    }
+    .pin-dot{
+      width:15px;
+      height:15px;
+      border-radius:50%;
+      border:2px solid #9aa8a0;
+      background:#fff;
+      transition:.16s;
+    }
+    .pin-dot.filled{
+      border-color:var(--orange);
+      background:var(--orange);
+      transform:scale(1.08);
+    }
+    .pin-pad{
+      width:min(270px,100%);
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+      direction:ltr;
+    }
+    .pin-key{
+      border:0;
+      border-radius:18px;
+      min-height:58px;
+      font-size:24px;
+      font-weight:900;
+      color:var(--ink);
+      background:#f2f7f4;
+      box-shadow: inset 0 0 0 1px rgba(0,83,61,.10);
+      cursor:pointer;
+    }
+    .pin-key:active{transform:scale(.97)}
+    .pin-key.orange{
+      background:linear-gradient(135deg,var(--orange),#f7b84d);
+      color:#fff;
+    }
+    .pin-message{
+      min-height:24px;
+      margin-top:14px;
+      font-weight:800;
+      color:var(--danger);
+    }
+    .pin-actions{
+      display:flex;
+      justify-content:center;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+    .pin-small-btn{
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--green);
+      border-radius:12px;
+      padding:8px 12px;
+      cursor:pointer;
+      font-weight:800;
+    }
+    .pin-settings-box{
+      margin-top:12px;
+      padding:12px;
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:#fffdf8;
+    }
+    .pin-settings-row{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:8px;
+      margin-top:8px;
+    }
+    @media(max-width:720px){
+      .pin-settings-row{grid-template-columns:1fr}
+    }
+
+  
+    /* صفحات منفصلة للإعدادات */
+    .app-nav{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:center;
+      margin:14px 0 12px;
+      padding:10px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:18px;
+      box-shadow:0 8px 18px rgba(0,83,61,.08);
+    }
+    .nav-btn{
+      border:0;
+      border-radius:14px;
+      padding:11px 14px;
+      background:#f2f7f4;
+      color:var(--green);
+      font-weight:900;
+      cursor:pointer;
+      min-width:130px;
+    }
+    .nav-btn.active{
+      background:linear-gradient(135deg,var(--green),var(--green3));
+      color:#fff;
+      box-shadow:0 8px 18px rgba(0,83,61,.18);
+    }
+    .app-page{display:none}
+    .app-page.active{display:block}
+    .page-title-card{
+      background:#fff;
+      border:2px solid var(--green);
+      border-radius:22px;
+      padding:16px;
+      margin:12px 0;
+      box-shadow:var(--shadow);
+    }
+    .page-title-card h2{
+      margin:0 0 6px;
+      color:var(--green);
+      font-size:24px;
+    }
+    .page-title-card p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.75;
+    }
+    .settings-page{
+      max-width:980px;
+      margin:0 auto 18px;
+    }
+    .app-tools-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:10px;
+    }
+    @media(max-width:720px){
+      .nav-btn{min-width:calc(50% - 8px)}
+      .app-tools-grid{grid-template-columns:1fr}
+    }
+
+  
+    /* نظام الحماية الجديد: رمز خاص + مدير/موظف + Firebase */
+    .owner-lock{
+      position:fixed;
+      inset:0;
+      z-index:12000;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      direction:rtl;
+      background:
+        radial-gradient(circle at top left, rgba(242,139,0,.25), transparent 32%),
+        radial-gradient(circle at bottom right, rgba(0,83,61,.30), transparent 38%),
+        linear-gradient(135deg,#061d25 0%,#0b3f35 58%,#041b16 100%);
+    }
+    .owner-lock.show{display:flex}
+    .secure-card{
+      width:min(460px,100%);
+      background:#fff;
+      border:2px solid rgba(242,139,0,.50);
+      border-radius:28px;
+      box-shadow:0 24px 70px rgba(0,0,0,.35);
+      padding:22px;
+      text-align:right;
+    }
+    .secure-logo{
+      width:78px;height:78px;border-radius:24px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:50px;font-weight:900;color:#fff;
+      background:linear-gradient(145deg,#00533d,#08734d);
+      box-shadow:0 12px 24px rgba(0,83,61,.26);
+      margin:0 auto 12px;
+    }
+    .secure-card h2{margin:0 0 6px;color:var(--green);text-align:center}
+    .secure-card p{margin:0 0 14px;color:var(--muted);line-height:1.75;text-align:center}
+    .secure-grid{display:grid;gap:10px}
+    .secure-grid input,.secure-grid select,.secure-grid textarea,
+    .cloud-card input,.cloud-card textarea,.cloud-card select{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px;
+      font-family:inherit;
+      background:#fffefb;
+      color:var(--ink);
+    }
+    .role-tabs{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+      margin-bottom:10px;
+    }
+    .role-tab{
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#f2f7f4;
+      color:var(--green);
+      padding:12px;
+      font-weight:900;
+      cursor:pointer;
+      text-align:center;
+    }
+    .role-tab.active{
+      background:linear-gradient(135deg,var(--green),var(--green3));
+      color:#fff;
+    }
+    .secure-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .secure-note{
+      margin-top:10px;
+      padding:10px;
+      border-radius:14px;
+      background:#fff8ef;
+      border:1px solid var(--line);
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.7;
+    }
+    .cloud-status{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:7px 10px;
+      border-radius:999px;
+      background:#effaf4;
+      color:var(--green);
+      font-weight:900;
+      border:1px solid #cfe8da;
+      margin-inline-start:8px;
+      font-size:13px;
+    }
+    .cloud-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:14px;
+      margin-top:12px;
+      box-shadow:0 8px 18px rgba(0,83,61,.06);
+    }
+    .cloud-card h3{margin:0 0 8px;color:var(--green)}
+    .mini-list{display:grid;gap:8px;max-height:330px;overflow:auto;padding-inline-end:3px}
+    .mini-item{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px;
+      background:#fffdf8;
+      line-height:1.65;
+    }
+    .mini-item strong{color:var(--green)}
+    .mini-time{font-size:12px;color:var(--muted)}
+    .readonly-badge{
+      background:#fff8ef;
+      color:#a45a00;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid #f0d2a8;
+      font-weight:900;
+      margin:8px 0;
+    }
+    body.employee-mode .manager-only{display:none !important}
+    body.manager-mode .employee-only{display:none !important}
+    body.employee-mode .row-actions{display:none !important}
+    body.employee-mode th.no-print, body.employee-mode td.no-print{display:none !important}
+    body.employee-mode #invoiceFormPanel{display:none !important}
+    body.employee-mode #pageReportSettings{display:none !important}
+    body.employee-mode .manager-nav-only{display:none !important}
+
+  </style>
+</head>
+<body>
+
+  <div class="owner-lock show" id="ownerLock">
+    <div class="secure-card">
+      <div class="secure-logo">N</div>
+      <h2>رمز صاحب تطبيق زاجل سحابي</h2>
+      <p>هذا الرمز خاص بك. لا يمكن لأي شخص الدخول إلى التطبيق قبل كتابته.</p>
+      <div class="secure-grid">
+        <label>الرمز الخاص</label>
+        <input id="ownerCodeInput" type="password" inputmode="numeric" placeholder="اكتب الرمز الخاص">
+      </div>
+      <div class="secure-actions">
+        <button onclick="verifyOwnerCode()">دخول</button>
+      </div>
+      <div id="ownerStatus" class="status"></div>
+      <div class="secure-note">رمز المالك خاص ولا يظهر داخل التطبيق ولا يمكن تعديله من الإعدادات.</div>
+    </div>
+  </div>
+
+  <div class="owner-lock" id="roleLock">
+    <div class="secure-card">
+      <div class="secure-logo">N</div>
+      <h2>تسجيل الدخول</h2>
+      <p>اختر طريقة الدخول: مدير أو موظف. المدير يستطيع التعديل، والموظف يشاهد التقارير ويرسل رسائل فقط.</p>
+      <div class="role-tabs">
+        <button class="role-tab active" id="managerTab" onclick="selectLoginRole('manager')">مدير</button>
+        <button class="role-tab" id="employeeTab" onclick="selectLoginRole('employee')">موظف</button>
+      </div>
+      <div class="secure-grid">
+        <label>رمز PIN</label>
+        <input id="rolePinInput" type="password" inputmode="numeric" placeholder="رمز الدخول">
+      </div>
+      <div class="secure-actions">
+        <button onclick="loginRole()">فتح التطبيق</button>
+      </div>
+      <div id="roleStatus" class="status"></div>
+      <div class="secure-note">
+        أدخل رمز PIN الخاص بدورك. المدير يستطيع تغيير رموز الدخول من إعدادات التطبيق دون رؤية الرمز القديم.
+      </div>
+    </div>
+  </div>
+
+
+  <div class="app">
+    <div class="hero" id="report">
+      <div class="header">
+        <div class="bus-art" aria-label="bus illustration">
+          <svg viewBox="0 0 220 120" role="img">
+            <defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#eaf6f1"/></linearGradient></defs>
+            <path d="M35 91 C75 57 105 67 145 40 C170 24 190 25 207 16" fill="none" stroke="#2f3f38" stroke-width="10" stroke-linecap="round"/>
+            <path d="M35 91 C75 57 105 67 145 40 C170 24 190 25 207 16" fill="none" stroke="#f39b00" stroke-width="3" stroke-dasharray="9 10" stroke-linecap="round"/>
+            <rect x="14" y="31" width="115" height="52" rx="12" fill="url(#g)" stroke="#00533d" stroke-width="4"/>
+            <path d="M26 36h62c18 0 31 12 35 28l2 8H22V43c0-4 1-7 4-7z" fill="#fff"/>
+            <path d="M33 41h40v25H28V47c0-4 2-6 5-6z" fill="#123d3d"/>
+            <path d="M78 41h25c8 0 14 6 17 19l1 6H78z" fill="#123d3d"/>
+            <path d="M16 70h111v11H16z" fill="#f39b00"/>
+            <circle cx="38" cy="86" r="10" fill="#173126"/><circle cx="38" cy="86" r="5" fill="#fff"/>
+            <circle cx="104" cy="86" r="10" fill="#173126"/><circle cx="104" cy="86" r="5" fill="#fff"/>
+            <path d="M151 19c9 0 16 7 16 16 0 14-16 29-16 29s-16-15-16-29c0-9 7-16 16-16z" fill="#f39b00"/>
+            <circle cx="151" cy="35" r="6" fill="#fff"/>
+            <path d="M184 44v34M195 53v25M176 59v19" stroke="#0d7b50" stroke-width="5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <h1 id="titleView">استئجار شعبان لباص الزاجل</h1>
+          <div class="subtitle">ملخص الفواتير بالليرة التركية - المصاريف: الوقود والأعطال وأجار السائق وأجار المعاون فقط</div>
+        </div>
+        <div class="route-box">
+          <div class="route-line"><span>📍 خط السير:</span><span id="routeView">كفردريان ↔ سرمدا</span></div>
+          <div class="date-line"><span>📅 تاريخ التقرير:</span><strong id="reportDateView">2026/07/20</strong></div><div class="cloud-status no-print" id="cloudStatus">Firebase: جاري الاتصال</div>
+        </div>
+      </div>
+
+      
+      <div class="app-nav no-print">
+        <button class="nav-btn active" data-page="pageHome" onclick="showPage('pageHome')">🏠 الرئيسية</button>
+        <button class="nav-btn manager-nav-only" data-page="pageReportSettings" onclick="showPage('pageReportSettings')">⚙️ إعدادات التقرير</button>
+        <button class="nav-btn" data-page="pageAppSettings" onclick="showPage('pageAppSettings')">🔐 إعدادات التطبيق</button>
+        <button class="nav-btn" onclick="window.print()">🖨️ طباعة PDF</button>
+      </div>
+
+      <div class="app-page active" id="pageHome">
+        <div class="toolbar no-print">
+          <button onclick="focusNextDate()">➕ التاريخ التالي</button>
+          <button class="secondary" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+          <button class="blue" onclick="showPage('pageAppSettings')">💾 النسخ الاحتياطي</button>
+          <button class="orange manager-only" onclick="showPage('pageReportSettings')">⚙️ إعدادات التقرير</button>
+        </div>
+
+        <div class="mobile-note no-print">اسحب الجدول يمينًا ويسارًا لرؤية كل الأعمدة. يتم حفظ كل تغيير تلقائيًا داخل الهاتف.</div>
+
+        <div class="panel no-print">
+          <div class="card manager-only" id="invoiceFormPanel">
+          <h2>➕ إضافة / تعديل فاتورة يومية</h2>
+          <div class="form-grid">
+            <div>
+              <label>التاريخ</label>
+              <input id="date" type="date">
+            </div>
+            <div>
+              <label>رقم الفاتورة</label>
+              <input id="invoiceNo" type="number" min="1" placeholder="تلقائي">
+            </div>
+            <div>
+              <label>الوصول / عدد الركاب</label>
+              <input id="passengers" type="number" min="0" placeholder="مثال: 232">
+            </div>
+            <div>
+              <label>أجرة الراكب</label>
+              <input id="fareInline" type="number" min="0" step="0.01">
+            </div>
+            <div>
+              <label>الوقود</label>
+              <input id="fuel" type="number" min="0" step="0.01" placeholder="0">
+            </div>
+            <div>
+              <label>الأعطال</label>
+              <input id="repairs" type="number" min="0" step="0.01" placeholder="0">
+            </div>
+            <div>
+              <label>أجار السائق المدفوع</label>
+              <input id="driverPaid" type="number" min="0" step="0.01" placeholder="450">
+            </div>
+            <div>
+              <label>أجار المعاون المدفوع</label>
+              <input id="assistantPaid" type="number" min="0" step="0.01" placeholder="0">
+            </div>
+            <div>
+              <label>الباقي للسائق</label>
+              <input id="driverRemaining" type="number" min="0" step="0.01" placeholder="تلقائي إذا تُرك فارغًا">
+            </div>
+            <div>
+              <label>الباقي للمعاون</label>
+              <input id="assistantRemaining" type="number" min="0" step="0.01" placeholder="تلقائي إذا تُرك فارغًا">
+            </div>
+            <div class="span-2">
+              <label>ملاحظة داخلية لليوم</label>
+              <input id="note" type="text" placeholder="اختياري">
+            </div>
+            <div class="span-4" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+              <button onclick="saveInvoice()">حفظ الفاتورة</button>
+              <button class="secondary" onclick="clearForm()">تفريغ الحقول</button>
+              <button class="orange" onclick="previewCalc()">حساب سريع قبل الحفظ</button>
+              <span id="calcPreview" class="status"></span>
+            </div>
+          </div>
+          <p class="hint">إذا تركت حقل الباقي فارغًا يحسبه التطبيق تلقائيًا: السائق يبقى 0 إذا تم دفع أجرته، والمعاون يبقى <span id="assistantDueHint">450</span> عند عدم دفع أجاره. ويمكنك كتابة أي قيمة يدويًا.</p>
+          <div id="status" class="status"></div>
+        </div>
+        </div>
+
+        <div class="table-wrap">
+        <table aria-label="جدول الفواتير">
+          <thead>
+            <tr>
+              <th>رقم الفاتورة</th>
+              <th>اليوم 📅</th>
+              <th>التاريخ 📅</th>
+              <th>الوصول 👥</th>
+              <th>المبلغ الإجمالي<br>(ل.ت) 💵</th>
+              <th>الوقود<br>(ل.ت) ⛽</th>
+              <th>الأعطال<br>(ل.ت) 🔧</th>
+              <th>أجار السائق<br>(ل.ت) 👤</th>
+              <th>إجمالي المعاون<br>(ل.ت) ◔</th>
+              <th>الصافي<br>(ل.ت) 🪙</th>
+              <th class="no-print">إجراء</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+
+      <div class="summary" id="summaryCards"></div>
+
+      <div class="remaining">
+        <div class="remain-box"><span>الباقي للمعاون:</span><span id="assistantRemainingTotal">0 ل.ت</span> 👥</div>
+        <div class="remain-box"><span>الباقي للسائق:</span><span id="driverRemainingTotal">0 ل.ت</span> 🛞</div>
+      </div>
+
+      <div class="footer-note"><span class="corner r"></span><span class="corner l"></span>ملاحظة: كل المصاريف يجب إرفاق الفواتير معها</div>
+      </div>
+
+
+      <div class="app-page no-print settings-page" id="pageReportSettings">
+        <div class="page-title-card">
+          <h2>⚙️ إعدادات التقرير</h2>
+          <p>هذه الصفحة مخصصة فقط لبيانات التقرير والحسابات الأساسية مثل العنوان، خط السير، التواريخ، وأجور الراكب والسائق والمعاون.</p>
+        </div>
+
+        <div class="card">
+          <h2>⚙️ إعدادات التقرير</h2>
+          <div class="settings-grid">
+            <div class="span-2">
+              <label>عنوان التقرير</label>
+              <input id="titleInput">
+            </div>
+            <div class="span-2">
+              <label>خط السير</label>
+              <input id="routeInput">
+            </div>
+            <div>
+              <label>تاريخ بداية اللائحة</label>
+              <input id="startDate" type="date">
+            </div>
+            <div>
+              <label>تاريخ نهاية اللائحة</label>
+              <input id="endDate" type="date">
+            </div>
+            <div>
+              <label>تاريخ التقرير</label>
+              <input id="reportDate" type="date">
+            </div>
+            <div>
+              <label>أجرة الراكب</label>
+              <input id="fare" type="number" min="0" step="0.01">
+            </div>
+            <div>
+              <label>أجرة السائق اليومية</label>
+              <input id="driverDue" type="number" min="0" step="0.01">
+            </div>
+            <div>
+              <label>أجرة المعاون اليومية</label>
+              <input id="assistantDue" type="number" min="0" step="0.01">
+            </div>
+            <div class="span-2" style="display:flex;gap:8px;flex-wrap:wrap">
+              <button onclick="saveSettings()">حفظ إعدادات التقرير</button>
+              <button class="secondary" onclick="showPage('pageHome')">رجوع للرئيسية</button>
+            </div>
+          </div>
+          <p class="hint">أي تعديل هنا يؤثر مباشرة على طريقة حساب اللائحة والفواتير الجديدة.</p>
+        </div>
+      </div>
+
+
+      <div class="app-page no-print settings-page" id="pageAppSettings">
+        <div class="page-title-card">
+          <h2>🔐 إعدادات التطبيق</h2>
+          <p>هذه الصفحة مخصصة لحماية التطبيق، النسخ الاحتياطي، الاستيراد، إرجاع بيانات المثال، ومسح البيانات.</p>
+        </div>
+
+        <div class="card">
+          <h2>👤 الحساب الحالي</h2>
+          <div id="sessionInfo" class="mini-item">لم يتم تسجيل الدخول.</div>
+
+          <div class="cloud-card" style="margin-top:12px">
+            <h3>🔑 تغيير PIN الخاص بي</h3>
+            <p class="hint">كل حساب يغيّر رقم PIN الخاص به بنفسه. لا تظهر الأرقام القديمة داخل التطبيق.</p>
+            <div class="settings-grid">
+              <div>
+                <label>PIN الحالي</label>
+                <input id="selfOldPin" type="password" inputmode="numeric" placeholder="اكتب الرمز الحالي">
+              </div>
+              <div>
+                <label>PIN الجديد</label>
+                <input id="selfNewPin" type="password" inputmode="numeric" placeholder="4 أرقام أو أكثر">
+              </div>
+              <div>
+                <label>تأكيد PIN الجديد</label>
+                <input id="selfConfirmPin" type="password" inputmode="numeric" placeholder="إعادة كتابة الرمز">
+              </div>
+              <div>
+                <label>&nbsp;</label>
+                <button onclick="changeMyPin()">حفظ PIN الخاص بي</button>
+              </div>
+            </div>
+            <div id="selfPinStatus" class="status"></div>
+          </div>
+
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+            <button class="secondary" onclick="logoutSecure()">تبديل الحساب / خروج</button>
+          </div>
+          <p class="hint">رمز المالك يُكتب مرة واحدة فقط بعد تثبيت التطبيق. بعد ذلك تختار حساب المدير أو الموظف برقم PIN الخاص به.</p>
+        </div>
+
+        <div class="card manager-only" style="margin-top:12px">
+          <h2>💾 النسخ والبيانات</h2>
+          <div class="app-tools-grid">
+            <button class="blue" onclick="exportBackup()">💾 إنشاء نسخة احتياطية</button>
+            <label class="file-label">📥 استيراد نسخة<input id="importFile" type="file" accept="application/json" class="hidden"></label>
+            <button class="secondary" onclick="loadSample()">إرجاع بيانات 6/20 - 6/23</button>
+            <button class="danger" onclick="resetAll()">🗑️ مسح كل الفواتير</button>
+            <button class="orange" id="installBtn" onclick="installApp()" style="display:none">📱 تثبيت التطبيق</button>
+            <button class="secondary" onclick="showPage('pageHome')">رجوع للرئيسية</button>
+          </div>
+          <p class="hint">النسخة الاحتياطية تُحفظ كملف JSON داخل مجلد التنزيلات، ويمكن استيرادها لاحقًا من نفس الصفحة.</p>
+        </div>
+
+        <div class="cloud-card manager-only">
+          <h3>🛡️ حساب الموظف</h3>
+          <p class="hint">رمز المالك لا يظهر ولا يعدّل. المدير يستطيع تعديل اسم الموظف أو إعادة تعيين PIN الموظف بكتابة رمز جديد فقط، دون رؤية الرمز القديم.</p>
+          <div class="settings-grid">
+            <div>
+              <label>اسم الموظف</label>
+              <input id="secureEmployeeName" placeholder="الموظف">
+            </div>
+            <div>
+              <label>إعادة تعيين PIN الموظف</label>
+              <input id="secureEmployeePin" type="password" inputmode="numeric" placeholder="اكتب رمزًا جديدًا عند الحاجة فقط">
+            </div>
+            <div class="span-2">
+              <button onclick="saveSecuritySettings()">حفظ بيانات الموظف</button>
+            </div>
+          </div>
+          <div id="securitySettingsStatus" class="status"></div>
+        </div>
+
+        <div class="cloud-card manager-only">
+          <h3>🔔 إرسال إشعار من المدير</h3>
+          <div class="settings-grid">
+            <div>
+              <label>عنوان الإشعار</label>
+              <input id="notifyTitle" placeholder="مثال: تنبيه">
+            </div>
+            <div>
+              <label>نص الإشعار</label>
+              <input id="notifyBody" placeholder="اكتب رسالة المدير">
+            </div>
+            <div class="span-2">
+              <button onclick="sendManagerNotification()">إرسال الإشعار للموظف</button>
+            </div>
+          </div>
+          <div id="notifyStatus" class="status"></div>
+        </div>
+
+        <div class="cloud-card">
+          <h3>📢 إشعارات المدير</h3>
+          <div id="notificationsList" class="mini-list"></div>
+        </div>
+
+        <div class="cloud-card employee-only">
+          <h3>✉️ إرسال رسالة إلى المدير</h3>
+          <textarea id="employeeMessageText" rows="4" placeholder="اكتب رسالتك للمدير هنا..."></textarea>
+          <div style="margin-top:10px">
+            <button onclick="sendMessageToManager()">إرسال الرسالة</button>
+          </div>
+          <div id="employeeMessageStatus" class="status"></div>
+          <h3 style="margin-top:14px">رسائلي وردود المدير</h3>
+          <div id="employeeMessagesList" class="mini-list"></div>
+        </div>
+
+        <div class="cloud-card manager-only">
+          <h3>📩 رسائل الموظف إلى المدير</h3>
+          <div id="managerMessagesList" class="mini-list"></div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+
+  <script src="firebase-config.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-database-compat.js"></script>
+
+<script>
+
+    // نظام الدخول الجديد: رمز خاص + مدير/موظف + Firebase Realtime Database
+    const SECURITY_LOCAL_KEY = "zajel_owner_roles_security_v2";
+    const SESSION_LOCAL_KEY = "zajel_current_session_v1";
+    const OWNER_VERIFIED_KEY = "zajel_owner_verified_once_v1";
+
+    // رمز المالك لا يظهر في الواجهة ولا يُحفظ في Firebase.
+    // القيمة هنا هي HASH وليست الرقم نفسه، لذلك لا يظهر الرمز داخل التطبيق.
+    const OWNER_CODE_HASH = "5301de28";
+
+    const DEFAULT_SECURITY = {
+      manager: { name: "المدير", pinHash: "4286f8ce" },
+      employee: { name: "الموظف", pinHash: "b5938cda" }
+    };
+
+    const COMPANY_ID = window.ZAJEL_COMPANY_ID || "zajel_main";
+    let securityData = loadSecurityLocal();
+    let currentSession = null;
+    let selectedLoginRole = "manager";
+    let firebaseDb = null;
+    let firebaseReady = false;
+    let applyingCloudState = false;
+    let stateRef = null;
+    let securityRef = null;
+    let notificationsRef = null;
+    let messagesRef = null;
+    let notificationsBootstrapped = false;
+    let messagesBootstrapped = false;
+    const seenNotificationIds = new Set(JSON.parse(localStorage.getItem("zajel_seen_notifications_v1") || "[]"));
+    const seenMessageIds = new Set(JSON.parse(localStorage.getItem("zajel_seen_messages_v1") || "[]"));
+
+    function secureHash(value){
+      let h = 2166136261;
+      const text = "zajel-secure-salt-v3::" + String(value);
+      for(let i = 0; i < text.length; i++){
+        h ^= text.charCodeAt(i);
+        h += (h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24);
+        h >>>= 0;
+      }
+      return ("00000000" + h.toString(16)).slice(-8);
+    }
+
+    function normalizeSecurity(data){
+      const src = data && typeof data === "object" ? data : {};
+      const managerPinHash = src.manager?.pinHash || (src.manager?.pin ? secureHash(src.manager.pin) : DEFAULT_SECURITY.manager.pinHash);
+      const employeePinHash = src.employee?.pinHash || (src.employee?.pin ? secureHash(src.employee.pin) : DEFAULT_SECURITY.employee.pinHash);
+      return {
+        manager: {
+          name: src.manager?.name || "المدير",
+          pinHash: managerPinHash
+        },
+        employee: {
+          name: src.employee?.name || "الموظف",
+          pinHash: employeePinHash
+        }
+      };
+    }
+
+function cloudPath(name=""){
+      return "zajel_secure_apps/" + COMPANY_ID + (name ? "/" + name : "");
+    }
+
+    function loadSecurityLocal(){
+      try{
+        const raw = localStorage.getItem(SECURITY_LOCAL_KEY);
+        if(raw){
+          const normalized = normalizeSecurity(JSON.parse(raw));
+          localStorage.setItem(SECURITY_LOCAL_KEY, JSON.stringify(normalized));
+          return normalized;
+        }
+      }catch(e){}
+      localStorage.setItem(SECURITY_LOCAL_KEY, JSON.stringify(DEFAULT_SECURITY));
+      return JSON.parse(JSON.stringify(DEFAULT_SECURITY));
+    }
+
+    function saveSecurityLocal(){
+      localStorage.setItem(SECURITY_LOCAL_KEY, JSON.stringify(securityData));
+    }
+
+    function initFirebaseLite(){
+      try{
+        if(!window.firebase || !window.ZAJEL_FIREBASE_CONFIG){
+          setCloudStatus("Firebase: غير مضبوط", false);
+          return;
+        }
+        firebase.initializeApp(window.ZAJEL_FIREBASE_CONFIG);
+        firebaseDb = firebase.database();
+        firebaseReady = true;
+        setCloudStatus("Firebase: متصل", true);
+        setupFirebaseListeners();
+      }catch(err){
+        console.error(err);
+        setCloudStatus("Firebase: خطأ اتصال", false);
+      }
+    }
+
+    function setCloudStatus(msg, ok=true){
+      const el = document.getElementById("cloudStatus");
+      if(!el) return;
+      el.textContent = msg;
+      el.style.background = ok ? "#effaf4" : "#fff1f2";
+      el.style.color = ok ? "var(--green)" : "var(--danger)";
+    }
+
+    function setupFirebaseListeners(){
+      if(!firebaseReady) return;
+
+      securityRef = firebaseDb.ref(cloudPath("security"));
+      securityRef.on("value", snap => {
+        const data = snap.val();
+        if(data && (data.manager || data.employee)){
+          securityData = normalizeSecurity(data);
+          saveSecurityLocal();
+          fillSecuritySettings();
+          // تنظيف أي بيانات قديمة كانت تحتوي أرقام PIN أو رمز المالك كنص.
+          securityRef.set(securityData).catch(()=>{});
+        }else{
+          securityRef.set(securityData).catch(()=>{});
+        }
+      });
+
+      stateRef = firebaseDb.ref(cloudPath("state"));
+      stateRef.on("value", snap => {
+        const cloudState = snap.val();
+        if(cloudState && cloudState.settings && Array.isArray(cloudState.invoices)){
+          applyingCloudState = true;
+          state = cloudState;
+          localStorage.setItem(LS_KEY, JSON.stringify(state));
+          render();
+          applyingCloudState = false;
+          setCloudStatus("Firebase: تمت المزامنة", true);
+        }else{
+          stateRef.set(state).catch(()=>{});
+        }
+      });
+
+      notificationsRef = firebaseDb.ref(cloudPath("notifications")).limitToLast(40);
+      notificationsRef.on("value", snap => renderNotifications(snap.val() || {}));
+
+      messagesRef = firebaseDb.ref(cloudPath("messages")).limitToLast(80);
+      messagesRef.on("value", snap => renderMessages(snap.val() || {}));
+    }
+
+    function pushStateToFirebase(){
+      if(firebaseReady && stateRef && isManager() && !applyingCloudState){
+        stateRef.set(state).catch(err => setStatus("تعذر المزامنة عبر Firebase.", false));
+      }
+    }
+
+    function pushSecurityToFirebase(){
+      saveSecurityLocal();
+      if(firebaseReady && securityRef){
+        securityRef.set(securityData).catch(() => {});
+      }
+    }
+
+    function showOnlyOwnerLock(){
+      document.getElementById("ownerLock")?.classList.add("show");
+      document.getElementById("roleLock")?.classList.remove("show");
+    }
+
+    function showRoleLock(){
+      document.getElementById("ownerLock")?.classList.remove("show");
+      document.getElementById("roleLock")?.classList.add("show");
+      document.getElementById("rolePinInput").value = "";
+      document.getElementById("roleStatus").textContent = "";
+    }
+
+    function hideAllLocks(){
+      document.getElementById("ownerLock")?.classList.remove("show");
+      document.getElementById("roleLock")?.classList.remove("show");
+    }
+
+    function verifyOwnerCode(){
+      const val = document.getElementById("ownerCodeInput").value.trim();
+      const st = document.getElementById("ownerStatus");
+      if(secureHash(val) === OWNER_CODE_HASH){
+        localStorage.setItem(OWNER_VERIFIED_KEY, "1");
+        st.textContent = "";
+        showRoleLock();
+      }else{
+        st.style.color = "var(--danger)";
+        st.textContent = "الرمز الخاص غير صحيح.";
+        if(navigator.vibrate) navigator.vibrate(120);
+      }
+    }
+
+    function selectLoginRole(role){
+      selectedLoginRole = role;
+      document.getElementById("managerTab").classList.toggle("active", role === "manager");
+      document.getElementById("employeeTab").classList.toggle("active", role === "employee");
+      document.getElementById("rolePinInput").value = "";
+      document.getElementById("roleStatus").textContent = "";
+    }
+
+    function loginRole(){
+      const pin = document.getElementById("rolePinInput").value.trim();
+      const st = document.getElementById("roleStatus");
+      const account = selectedLoginRole === "manager" ? securityData.manager : securityData.employee;
+      if(secureHash(pin) === String(account.pinHash || "")){
+        currentSession = {
+          role: selectedLoginRole,
+          name: account.name || (selectedLoginRole === "manager" ? "المدير" : "الموظف")
+        };
+        localStorage.setItem(SESSION_LOCAL_KEY, JSON.stringify(currentSession));
+        hideAllLocks();
+        applyRoleMode();
+        fillSecuritySettings();
+        syncNativeNotificationRole();
+        showPage("pageHome");
+      }else{
+        st.style.color = "var(--danger)";
+        st.textContent = "رمز PIN غير صحيح.";
+        if(navigator.vibrate) navigator.vibrate(120);
+      }
+    }
+
+    function logoutSecure(){
+      currentSession = null;
+      localStorage.removeItem(SESSION_LOCAL_KEY);
+      document.body.classList.remove("manager-mode", "employee-mode");
+      syncNativeNotificationRole();
+      showRoleLock();
+    }
+
+    function isManager(){
+      return currentSession && currentSession.role === "manager";
+    }
+
+    function isEmployee(){
+      return currentSession && currentSession.role === "employee";
+    }
+
+    function requireManager(){
+      if(!isManager()){
+        setStatus("حساب الموظف للمشاهدة فقط ولا يمكنه التعديل.", false);
+        return false;
+      }
+      return true;
+    }
+
+
+    function syncNativeNotificationRole(){
+      try{
+        if(window.ZajelAndroid && typeof window.ZajelAndroid.setNotificationRole === "function"){
+          window.ZajelAndroid.setNotificationRole(currentSession?.role || "", COMPANY_ID);
+        }
+      }catch(e){}
+    }
+
+    function applyRoleMode(){
+      document.body.classList.toggle("manager-mode", isManager());
+      document.body.classList.toggle("employee-mode", isEmployee());
+
+      const info = document.getElementById("sessionInfo");
+      if(info){
+        if(currentSession){
+          info.innerHTML = `<strong>${currentSession.name}</strong><br>نوع الدخول: ${isManager() ? "مدير - تعديل كامل" : "موظف - مشاهدة فقط"}<br>المزامنة: Firebase`;
+        }else{
+          info.textContent = "لم يتم تسجيل الدخول.";
+        }
+      }
+
+      if(isEmployee() && document.getElementById("pageReportSettings")?.classList.contains("active")){
+        showPage("pageHome");
+      }
+    }
+
+    function fillSecuritySettings(){
+      const setVal = (id, val) => {
+        const el = document.getElementById(id);
+        if(el) el.value = val ?? "";
+      };
+      setVal("selfOldPin", "");
+      setVal("selfNewPin", "");
+      setVal("selfConfirmPin", "");
+      setVal("secureEmployeeName", securityData.employee?.name || "الموظف");
+      setVal("secureEmployeePin", "");
+      applyRoleMode();
+    }
+
+    function changeMyPin(){
+      if(!currentSession){
+        return;
+      }
+      const oldPin = document.getElementById("selfOldPin").value.trim();
+      const newPin = document.getElementById("selfNewPin").value.trim();
+      const confirmPin = document.getElementById("selfConfirmPin").value.trim();
+      const status = document.getElementById("selfPinStatus");
+      const key = isManager() ? "manager" : "employee";
+
+      if(secureHash(oldPin) !== securityData[key].pinHash){
+        status.style.color = "var(--danger)";
+        status.textContent = "PIN الحالي غير صحيح.";
+        return;
+      }
+      if(newPin.length < 4){
+        status.style.color = "var(--danger)";
+        status.textContent = "PIN الجديد يجب أن يكون 4 أرقام أو أكثر.";
+        return;
+      }
+      if(newPin !== confirmPin){
+        status.style.color = "var(--danger)";
+        status.textContent = "تأكيد PIN غير مطابق.";
+        return;
+      }
+
+      securityData[key].pinHash = secureHash(newPin);
+      pushSecurityToFirebase();
+      fillSecuritySettings();
+      status.style.color = "var(--green)";
+      status.textContent = "تم تغيير PIN الخاص بك بنجاح.";
+    }
+
+    function saveSecuritySettings(){
+      if(!requireManager()) return;
+      const employeeName = document.getElementById("secureEmployeeName").value.trim() || "الموظف";
+      const employeePin = document.getElementById("secureEmployeePin").value.trim();
+
+      const status = document.getElementById("securitySettingsStatus");
+      if(employeePin && employeePin.length < 4){
+        status.style.color = "var(--danger)";
+        status.textContent = "رمز الموظف الجديد يجب أن يكون 4 أرقام أو أكثر.";
+        return;
+      }
+
+      securityData = {
+        manager: {
+          name: securityData.manager?.name || "المدير",
+          pinHash: securityData.manager.pinHash
+        },
+        employee: {
+          name: employeeName,
+          pinHash: employeePin ? secureHash(employeePin) : securityData.employee.pinHash
+        }
+      };
+      pushSecurityToFirebase();
+      fillSecuritySettings();
+      status.style.color = "var(--green)";
+      status.textContent = "تم حفظ بيانات الموظف. لم يتم إظهار أي رقم PIN.";
+      applyRoleMode();
+      createManagerActionNotification("تحديث حساب الموظف", "قام المدير بتحديث بيانات حساب الموظف.");
+    }
+
+
+    function rememberSeen(key, set, storageKey){
+      set.add(key);
+      try{
+        localStorage.setItem(storageKey, JSON.stringify(Array.from(set).slice(-300)));
+      }catch(e){}
+    }
+
+    function phoneNotify(title, body){
+      const t = String(title || "زاجل");
+      const b = String(body || "");
+      try{
+        if(window.ZajelAndroid && typeof window.ZajelAndroid.showNotification === "function"){
+          window.ZajelAndroid.showNotification(t, b);
+          return;
+        }
+      }catch(e){}
+
+      try{
+        if("Notification" in window){
+          if(Notification.permission === "granted"){
+            new Notification(t, {body:b});
+          }else if(Notification.permission !== "denied"){
+            Notification.requestPermission().then(p => {
+              if(p === "granted") new Notification(t, {body:b});
+            });
+          }
+        }
+      }catch(e){}
+    }
+
+
+    function queueCloudPush(targetRole, title, body){
+      if(!firebaseReady || !targetRole) return;
+      firebaseDb.ref(cloudPath("pushQueue")).push({
+        targetRole,
+        title: title || "زاجل سحابي",
+        body: body || "",
+        createdAt: Date.now()
+      }).catch(()=>{});
+    }
+
+    function createManagerActionNotification(title, body){
+      if(!isManager() || !firebaseReady) return;
+      firebaseDb.ref(cloudPath("notifications")).push({
+        title: title || "تحديث من المدير",
+        body: body || "قام المدير بتحديث بيانات التطبيق.",
+        createdAt: Date.now(),
+        from: currentSession?.name || "المدير",
+        auto: true
+      }).catch(()=>{});
+    }
+
+
+    function sendManagerNotification(){
+      if(!requireManager()) return;
+      const title = document.getElementById("notifyTitle").value.trim() || "إشعار من المدير";
+      const body = document.getElementById("notifyBody").value.trim();
+      const status = document.getElementById("notifyStatus");
+      if(!body){
+        status.style.color = "var(--danger)";
+        status.textContent = "اكتب نص الإشعار أولاً.";
+        return;
+      }
+      const payload = {
+        title, body,
+        createdAt: Date.now(),
+        from: currentSession?.name || "المدير",
+        manual: true
+      };
+      if(firebaseReady){
+        firebaseDb.ref(cloudPath("notifications")).push(payload);
+        queueCloudPush("employee", payload.title, payload.body);
+        status.style.color = "var(--green)";
+        status.textContent = "تم إرسال الإشعار عبر Firebase.";
+      }else{
+        status.style.color = "var(--danger)";
+        status.textContent = "Firebase غير متصل.";
+      }
+      document.getElementById("notifyTitle").value = "";
+      document.getElementById("notifyBody").value = "";
+    }
+
+    function renderNotifications(data){
+      const box = document.getElementById("notificationsList");
+      const items = Object.entries(data).map(([id,n]) => ({id, ...n})).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+
+      if(box){
+        box.innerHTML = items.map(n => `<div class="mini-item">
+          <strong>🔔 ${escapeHtml(n.title || "إشعار")}</strong><br>
+          ${escapeHtml(n.body || "")}<br>
+          <span class="mini-time">${formatTime(n.createdAt)} - ${escapeHtml(n.from || "المدير")}</span>
+        </div>`).join("") || `<div class="mini-item">لا توجد إشعارات بعد.</div>`;
+      }
+
+      for(const n of items){
+        if(seenNotificationIds.has(n.id)) continue;
+        rememberSeen(n.id, seenNotificationIds, "zajel_seen_notifications_v1");
+        if(notificationsBootstrapped && isEmployee()){
+          phoneNotify(n.title || "إشعار من المدير", n.body || "");
+        }
+      }
+      notificationsBootstrapped = true;
+    }
+
+    function sendMessageToManager(){
+      if(!isEmployee()){
+        return;
+      }
+      const text = document.getElementById("employeeMessageText").value.trim();
+      const status = document.getElementById("employeeMessageStatus");
+      if(!text){
+        status.style.color = "var(--danger)";
+        status.textContent = "اكتب الرسالة أولاً.";
+        return;
+      }
+      if(!firebaseReady){
+        status.style.color = "var(--danger)";
+        status.textContent = "Firebase غير متصل.";
+        return;
+      }
+      firebaseDb.ref(cloudPath("messages")).push({
+        type: "employee",
+        body: text,
+        createdAt: Date.now(),
+        from: currentSession?.name || securityData.employee.name || "الموظف"
+      });
+      queueCloudPush("manager", "رسالة من الموظف", text);
+      document.getElementById("employeeMessageText").value = "";
+      status.style.color = "var(--green)";
+      status.textContent = "تم إرسال الرسالة إلى المدير.";
+    }
+
+    function renderMessages(data){
+      const items = Object.entries(data).map(([id,m]) => ({id, ...m})).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+
+      const managerBox = document.getElementById("managerMessagesList");
+      if(managerBox){
+        managerBox.innerHTML = items.map(m => `<div class="mini-item">
+          <strong>${m.type === "managerReply" ? "رد المدير" : escapeHtml(m.from || "الموظف")}</strong><br>
+          ${escapeHtml(m.body || "")}<br>
+          <span class="mini-time">${formatTime(m.createdAt)}</span>
+          ${m.type === "employee" ? `<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+            <input id="reply_${m.id}" placeholder="اكتب رد المدير">
+            <button onclick="replyToEmployee('${m.id}')">إرسال رد</button>
+          </div>` : ""}
+        </div>`).join("") || `<div class="mini-item">لا توجد رسائل بعد.</div>`;
+      }
+
+      const empBox = document.getElementById("employeeMessagesList");
+      if(empBox){
+        empBox.innerHTML = items.map(m => `<div class="mini-item">
+          <strong>${m.type === "managerReply" ? "رد المدير" : "رسالتي"}</strong><br>
+          ${escapeHtml(m.body || "")}<br>
+          <span class="mini-time">${formatTime(m.createdAt)}</span>
+        </div>`).join("") || `<div class="mini-item">لا توجد رسائل بعد.</div>`;
+      }
+
+      for(const m of items){
+        if(seenMessageIds.has(m.id)) continue;
+        rememberSeen(m.id, seenMessageIds, "zajel_seen_messages_v1");
+        if(messagesBootstrapped && isManager() && m.type === "employee"){
+          phoneNotify("رسالة من الموظف", m.body || "");
+        }
+        if(messagesBootstrapped && isEmployee() && m.type === "managerReply"){
+          phoneNotify("رد من المدير", m.body || "");
+        }
+      }
+      messagesBootstrapped = true;
+    }
+
+    function replyToEmployee(messageId){
+      if(!requireManager()) return;
+      const input = document.getElementById("reply_" + messageId);
+      const body = input?.value.trim();
+      if(!body) return;
+      firebaseDb.ref(cloudPath("messages")).push({
+        type: "managerReply",
+        body,
+        createdAt: Date.now(),
+        from: currentSession?.name || "المدير",
+        replyTo: messageId
+      });
+      queueCloudPush("employee", "رد من المدير", body);
+      input.value = "";
+    }
+
+    function formatTime(ms){
+      if(!ms) return "";
+      try{return new Date(ms).toLocaleString("ar", {hour12:true});}catch(e){return "";}
+    }
+
+    function escapeHtml(str){
+      return String(str ?? "").replace(/[&<>"']/g, s => ({
+        "&":"&amp;", "<":"&lt;", ">":"&gt;", "\"":"&quot;", "'":"&#039;"
+      }[s]));
+    }
+
+    function startSecureApp(){
+      initFirebaseLite();
+      const verified = localStorage.getItem(OWNER_VERIFIED_KEY) === "1";
+      if(verified){
+        showRoleLock();
+      }else{
+        showOnlyOwnerLock();
+      }
+      applyRoleMode();
+      fillSecuritySettings();
+    }
+
+
+
+    function showPage(pageId){
+      document.querySelectorAll(".app-page").forEach(page => {
+        page.classList.toggle("active", page.id === pageId);
+      });
+      document.querySelectorAll(".nav-btn[data-page]").forEach(btn => {
+        btn.classList.toggle("active", btn.getAttribute("data-page") === pageId);
+      });
+      try{ window.scrollTo({top:0, behavior:"smooth"}); }catch(e){ window.scrollTo(0,0); }
+    }
+    const LS_KEY = "zajel_bus_invoices_app_v3";
+    const dayNames = ["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
+
+    const sampleState = {
+      settings: {
+        title: "استئجار شعبان لباص الزاجل",
+        route: "كفردريان ↔ سرمدا",
+        startDate: "2026-06-20",
+        endDate: "2026-07-20",
+        reportDate: "2026-07-20",
+        fare: 15,
+        driverDue: 450,
+        assistantDue: 450
+      },
+      invoices: [
+        {date:"2026-06-20", invoiceNo:1, passengers:220, fuel:3115, repairs:0, driverPaid:450, assistantPaid:100, driverRemaining:0, assistantRemaining:0, note:""},
+        {date:"2026-06-21", invoiceNo:2, passengers:222, fuel:2315, repairs:550, driverPaid:450, assistantPaid:0, driverRemaining:0, assistantRemaining:450, note:""},
+        {date:"2026-06-22", invoiceNo:3, passengers:221, fuel:1800, repairs:0, driverPaid:450, assistantPaid:0, driverRemaining:0, assistantRemaining:450, note:""},
+        {date:"2026-06-23", invoiceNo:4, passengers:232, fuel:2000, repairs:0, driverPaid:450, assistantPaid:0, driverRemaining:0, assistantRemaining:450, note:""}
+      ]
+    };
+
+    let state = loadState();
+    let deferredPrompt = null;
+
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const btn = document.getElementById("installBtn");
+      if(btn) btn.style.display = "inline-flex";
+    });
+
+    function installApp(){
+      if(!deferredPrompt){
+        setStatus("زر التثبيت يظهر عند فتح التطبيق من رابط HTTPS أو سيرفر محلي عبر Chrome.", true);
+        return;
+      }
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.finally(() => deferredPrompt = null);
+    }
+
+    if("serviceWorker" in navigator){
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("service-worker.js").catch(() => {});
+      });
+    }
+
+    function loadState(){
+      try{
+        const raw = localStorage.getItem(LS_KEY);
+        if(raw) return JSON.parse(raw);
+      }catch(e){}
+      localStorage.setItem(LS_KEY, JSON.stringify(sampleState));
+      return JSON.parse(JSON.stringify(sampleState));
+    }
+
+    function persist(){
+      localStorage.setItem(LS_KEY, JSON.stringify(state));
+      pushStateToFirebase();
+    }
+
+    function n(v){
+      const x = parseFloat(v);
+      return Number.isFinite(x) ? x : 0;
+    }
+    function fmt(v){
+      const x = n(v);
+      return x.toLocaleString("en-US", {minimumFractionDigits:2, maximumFractionDigits:2});
+    }
+    function fmt0(v){
+      return Math.round(n(v)).toLocaleString("en-US");
+    }
+    function dateObj(s){ return new Date(s + "T12:00:00"); }
+    function ymdSlash(s){ return s ? s.replaceAll("-", "/") : "-"; }
+    function dayName(s){ return dayNames[dateObj(s).getDay()]; }
+    function addDays(dateStr, days){
+      const d = dateObj(dateStr);
+      d.setDate(d.getDate() + days);
+      return d.toISOString().slice(0,10);
+    }
+    function datesBetween(start, end){
+      const out = [];
+      let cur = start;
+      let guard = 0;
+      while(cur <= end && guard < 370){
+        out.push(cur);
+        cur = addDays(cur, 1);
+        guard++;
+      }
+      return out;
+    }
+    function calc(inv){
+      const income = n(inv.passengers) * n(state.settings.fare);
+      const expenses = n(inv.fuel) + n(inv.repairs) + n(inv.driverPaid) + n(inv.assistantPaid);
+      return {income, expenses, net: income - expenses};
+    }
+    function totals(){
+      return state.invoices.reduce((acc, inv) => {
+        const c = calc(inv);
+        acc.passengers += n(inv.passengers);
+        acc.income += c.income;
+        acc.fuel += n(inv.fuel);
+        acc.repairs += n(inv.repairs);
+        acc.driverPaid += n(inv.driverPaid);
+        acc.assistantPaid += n(inv.assistantPaid);
+        acc.expenses += c.expenses;
+        acc.net += c.net;
+        acc.driverRemaining += n(inv.driverRemaining);
+        acc.assistantRemaining += n(inv.assistantRemaining);
+        return acc;
+      }, {passengers:0,income:0,fuel:0,repairs:0,driverPaid:0,assistantPaid:0,expenses:0,net:0,driverRemaining:0,assistantRemaining:0});
+    }
+
+    function render(){
+      const s = state.settings;
+      applyRoleMode();
+      document.getElementById("titleView").textContent = s.title;
+      document.getElementById("routeView").textContent = s.route;
+      document.getElementById("reportDateView").textContent = ymdSlash(s.reportDate);
+      document.getElementById("titleInput").value = s.title;
+      document.getElementById("routeInput").value = s.route;
+      document.getElementById("startDate").value = s.startDate;
+      document.getElementById("endDate").value = s.endDate;
+      document.getElementById("reportDate").value = s.reportDate;
+      document.getElementById("fare").value = s.fare;
+      document.getElementById("fareInline").value = s.fare;
+      document.getElementById("driverDue").value = s.driverDue;
+      document.getElementById("assistantDue").value = s.assistantDue;
+      document.getElementById("assistantDueHint").textContent = fmt0(s.assistantDue);
+
+      const byDate = new Map(state.invoices.map(x => [x.date, x]));
+      const tbody = document.getElementById("rows");
+      tbody.innerHTML = "";
+      for(const d of datesBetween(s.startDate, s.endDate)){
+        const inv = byDate.get(d);
+        const tr = document.createElement("tr");
+        if(dayName(d) === "الجمعة") tr.classList.add("friday");
+        if(inv){
+          const c = calc(inv);
+          const netClass = c.net < 0 ? "negative" : "positive";
+          tr.innerHTML = `
+            <td>${inv.invoiceNo || "-"}</td>
+            <td>${dayName(d)}</td>
+            <td>${ymdSlash(d)}</td>
+            <td>${fmt0(inv.passengers)}</td>
+            <td>${fmt0(c.income)}</td>
+            <td>${fmt0(inv.fuel)}</td>
+            <td>${n(inv.repairs) ? fmt0(inv.repairs) : "0"}</td>
+            <td>${fmt0(inv.driverPaid)}</td>
+            <td>${fmt0(inv.assistantPaid)}</td>
+            <td class="${netClass}">${fmt0(c.net)}</td>
+            <td class="no-print"><div class="row-actions">
+              <button class="secondary" onclick="editInvoice('${d}')">تعديل</button>
+              <button class="danger" onclick="deleteInvoice('${d}')">حذف</button>
+            </div></td>`;
+        } else {
+          tr.innerHTML = `
+            <td class="muted">-</td>
+            <td>${dayName(d)}</td>
+            <td>${ymdSlash(d)}</td>
+            <td class="muted">-</td>
+            <td class="muted">-</td>
+            <td class="muted">-</td>
+            <td class="muted">-</td>
+            <td class="muted">-</td>
+            <td class="muted">-</td>
+            <td class="muted">-</td>
+            <td class="no-print"><button class="secondary" onclick="newForDate('${d}')">إضافة</button></td>`;
+        }
+        tbody.appendChild(tr);
+      }
+
+      const t = totals();
+      const cards = [
+        ["الصافي النهائي", fmt(t.net), "ل.ت", "s-green"],
+        ["إجمالي المصاريف", fmt(t.expenses), "ل.ت", "s-green"],
+        ["إجمالي الأعطال", fmt(t.repairs), "ل.ت", "s-blue"],
+        ["إجمالي الوقود", fmt(t.fuel), "ل.ت", "s-green2"],
+        ["إجمالي أجار السائق", fmt(t.driverPaid), "ل.ت", "s-green2"],
+        ["إجمالي أجار المعاون", fmt(t.assistantPaid), "ل.ت", "s-green2"],
+        ["إجمالي المدخول", fmt(t.income), "ل.ت", "s-orange"],
+        ["إجمالي الوصول", fmt0(t.passengers), "", "s-purple"],
+      ];
+      document.getElementById("summaryCards").innerHTML = cards.map(c => `
+        <div class="sum-card ${c[3]}"><div class="t">${c[0]}</div><div class="v">${c[1]}</div><div class="c">${c[2]}</div></div>
+      `).join("");
+      document.getElementById("driverRemainingTotal").textContent = `${fmt0(t.driverRemaining)} ل.ت`;
+      document.getElementById("assistantRemainingTotal").textContent = `${fmt0(t.assistantRemaining)} ل.ت`;
+    }
+
+    function saveSettings(){
+      if(!requireManager()) return;
+      const startDate = document.getElementById("startDate").value || state.settings.startDate;
+      const endDate = document.getElementById("endDate").value || state.settings.endDate;
+      if(startDate > endDate){
+        setStatus("تاريخ البداية يجب أن يكون قبل تاريخ النهاية.", false);
+        return;
+      }
+      state.settings = {
+        title: document.getElementById("titleInput").value.trim() || "استئجار شعبان لباص الزاجل",
+        route: document.getElementById("routeInput").value.trim() || "كفردريان ↔ سرمدا",
+        startDate,
+        endDate,
+        reportDate: document.getElementById("reportDate").value || endDate,
+        fare: n(document.getElementById("fare").value),
+        driverDue: n(document.getElementById("driverDue").value),
+        assistantDue: n(document.getElementById("assistantDue").value)
+      };
+      persist();
+      render();
+      setStatus("تم حفظ الإعدادات.");
+      createManagerActionNotification("تعديل إعدادات التقرير", "قام المدير بتعديل إعدادات التقرير.");
+    }
+
+    function readForm(){
+      const date = document.getElementById("date").value;
+      const invoiceNoRaw = document.getElementById("invoiceNo").value;
+      const driverPaid = n(document.getElementById("driverPaid").value);
+      const assistantPaid = n(document.getElementById("assistantPaid").value);
+      const driverRemainingRaw = document.getElementById("driverRemaining").value;
+      const assistantRemainingRaw = document.getElementById("assistantRemaining").value;
+      const existing = state.invoices.find(x => x.date === date);
+      const nextNo = existing?.invoiceNo || (state.invoices.reduce((m,x)=>Math.max(m,n(x.invoiceNo)),0) + 1);
+      const driverRemaining = driverRemainingRaw === "" ? (driverPaid <= 0 ? n(state.settings.driverDue) : 0) : n(driverRemainingRaw);
+      const assistantRemaining = assistantRemainingRaw === "" ? (assistantPaid <= 0 ? n(state.settings.assistantDue) : 0) : n(assistantRemainingRaw);
+      return {
+        date,
+        invoiceNo: invoiceNoRaw === "" ? nextNo : n(invoiceNoRaw),
+        passengers: n(document.getElementById("passengers").value),
+        fuel: n(document.getElementById("fuel").value),
+        repairs: n(document.getElementById("repairs").value),
+        driverPaid,
+        assistantPaid,
+        driverRemaining,
+        assistantRemaining,
+        note: document.getElementById("note").value.trim()
+      };
+    }
+
+    function saveInvoice(){
+      if(!requireManager()) return;
+      state.settings.fare = n(document.getElementById("fareInline").value || state.settings.fare);
+      const inv = readForm();
+      if(!inv.date){
+        setStatus("اختر التاريخ أولاً.", false);
+        return;
+      }
+      if(inv.passengers < 0 || inv.fuel < 0 || inv.repairs < 0){
+        setStatus("لا يمكن إدخال قيم سالبة.", false);
+        return;
+      }
+      const idx = state.invoices.findIndex(x => x.date === inv.date);
+      if(idx >= 0) state.invoices[idx] = inv;
+      else state.invoices.push(inv);
+      state.invoices.sort((a,b) => a.date.localeCompare(b.date));
+      persist();
+      render();
+      clearForm(false);
+      setStatus("تم حفظ الفاتورة وإعادة حساب المجاميع.");
+      createManagerActionNotification("تحديث فاتورة", "قام المدير بحفظ أو تعديل فاتورة بتاريخ " + ymdSlash(inv.date) + ".");
+    }
+
+    function previewCalc(){
+      const tempFare = n(document.getElementById("fareInline").value || state.settings.fare);
+      const passengers = n(document.getElementById("passengers").value);
+      const income = passengers * tempFare;
+      const expenses = n(document.getElementById("fuel").value) + n(document.getElementById("repairs").value) + n(document.getElementById("driverPaid").value) + n(document.getElementById("assistantPaid").value);
+      const net = income - expenses;
+      document.getElementById("calcPreview").textContent = `المدخول ${fmt0(income)} | المصاريف ${fmt0(expenses)} | الصافي ${fmt0(net)} ل.ت`;
+    }
+
+    function clearForm(show=true){
+      ["date","invoiceNo","passengers","fuel","repairs","driverPaid","assistantPaid","driverRemaining","assistantRemaining","note"].forEach(id => document.getElementById(id).value = "");
+      document.getElementById("fareInline").value = state.settings.fare;
+      document.getElementById("calcPreview").textContent = "";
+      if(show) setStatus("تم تفريغ الحقول.");
+    }
+
+    function editInvoice(date){
+      const inv = state.invoices.find(x => x.date === date);
+      if(!inv) return;
+      document.getElementById("date").value = inv.date;
+      document.getElementById("invoiceNo").value = inv.invoiceNo;
+      document.getElementById("passengers").value = inv.passengers;
+      document.getElementById("fuel").value = inv.fuel;
+      document.getElementById("repairs").value = inv.repairs;
+      document.getElementById("driverPaid").value = inv.driverPaid;
+      document.getElementById("assistantPaid").value = inv.assistantPaid;
+      document.getElementById("driverRemaining").value = inv.driverRemaining;
+      document.getElementById("assistantRemaining").value = inv.assistantRemaining;
+      document.getElementById("note").value = inv.note || "";
+      document.getElementById("fareInline").value = state.settings.fare;
+      window.scrollTo({top:0, behavior:"smooth"});
+      setStatus("تم فتح الفاتورة للتعديل.");
+    }
+
+    function deleteInvoice(date){
+      if(!requireManager()) return;
+      if(!confirm("هل تريد حذف فاتورة هذا اليوم؟")) return;
+      state.invoices = state.invoices.filter(x => x.date !== date);
+      persist();
+      render();
+      setStatus("تم حذف الفاتورة.");
+      createManagerActionNotification("حذف فاتورة", "قام المدير بحذف فاتورة بتاريخ " + ymdSlash(date) + ".");
+    }
+
+    function newForDate(date){
+      if(!requireManager()) return;
+      clearForm(false);
+      document.getElementById("date").value = date;
+      document.getElementById("invoiceNo").value = state.invoices.reduce((m,x)=>Math.max(m,n(x.invoiceNo)),0) + 1;
+      document.getElementById("driverPaid").value = state.settings.driverDue;
+      document.getElementById("assistantPaid").value = 0;
+      window.scrollTo({top:0, behavior:"smooth"});
+      setStatus("اكتب بيانات اليوم ثم اضغط حفظ.");
+    }
+
+    function focusNextDate(){
+      const filled = new Set(state.invoices.map(x => x.date));
+      const dates = datesBetween(state.settings.startDate, state.settings.endDate);
+      const next = dates.find(d => !filled.has(d)) || addDays(state.invoices[state.invoices.length-1]?.date || state.settings.startDate, 1);
+      newForDate(next);
+    }
+
+    function setStatus(msg, ok=true){
+      const el = document.getElementById("status");
+      el.style.color = ok ? "var(--green2)" : "var(--danger)";
+      el.textContent = msg;
+      setTimeout(() => { if(el.textContent === msg) el.textContent = ""; }, 4500);
+    }
+
+    function exportBackup(){
+      const backupText = JSON.stringify(state, null, 2);
+      const filename = "backup-zajel-bus-invoices-" + new Date().toISOString().slice(0,10) + ".json";
+
+      if(window.ZajelAndroid && typeof window.ZajelAndroid.saveBackup === "function"){
+        window.ZajelAndroid.saveBackup(backupText, filename);
+        setStatus("تم إنشاء النسخة الاحتياطية وحفظها في التنزيلات.");
+        return;
+      }
+
+      try{
+        const blob = new Blob([backupText], {type:"application/json"});
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(a.href);
+        setStatus("تم تنزيل النسخة الاحتياطية.");
+      }catch(err){
+        try{
+          navigator.clipboard.writeText(backupText);
+          setStatus("تعذر تنزيل الملف، تم نسخ النسخة الاحتياطية كنص.");
+        }catch(e){
+          prompt("انسخ النسخة الاحتياطية يدويًا:", backupText);
+        }
+      }
+    }
+
+    const importFileInput = document.getElementById("importFile");
+    if(importFileInput) importFileInput.addEventListener("change", async (e) => {
+      const file = e.target.files[0];
+      if(!file) return;
+      try{
+        const data = JSON.parse(await file.text());
+        if(!data.settings || !Array.isArray(data.invoices)) throw new Error("bad");
+        state = data;
+        persist();
+        render();
+        setStatus("تم استيراد البيانات بنجاح.");
+      }catch(err){
+        setStatus("ملف الاستيراد غير صحيح.", false);
+      }finally{
+        e.target.value = "";
+      }
+    });
+
+    function resetAll(){
+      if(!requireManager()) return;
+      if(!confirm("سيتم حذف كل الفواتير المحفوظة داخل هذا الجهاز. هل أنت متأكد؟")) return;
+      state = {settings: JSON.parse(JSON.stringify(sampleState.settings)), invoices: []};
+      persist();
+      render();
+      clearForm(false);
+      setStatus("تم مسح الفواتير.");
+      createManagerActionNotification("مسح الفواتير", "قام المدير بمسح جميع الفواتير.");
+    }
+
+    function loadSample(){
+      if(!requireManager()) return;
+      if(!confirm("سيتم استبدال البيانات الحالية ببيانات المثال حتى 2026/06/23. متابعة؟")) return;
+      state = JSON.parse(JSON.stringify(sampleState));
+      persist();
+      render();
+      clearForm(false);
+      setStatus("تم إرجاع بيانات المثال.");
+      createManagerActionNotification("إرجاع بيانات المثال", "قام المدير بإرجاع بيانات المثال.");
+    }
+
+    render();
+    startSecureApp();
+  </script>
+</body>
+</html>

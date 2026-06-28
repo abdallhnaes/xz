@@ -1,0 +1,10 @@
+{
+  "rules": {
+    "zajel_secure_apps": {
+      "$companyId": {
+        ".read": true,
+        ".write": true
+      }
+    }
+  }
+}
